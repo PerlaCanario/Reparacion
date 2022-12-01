@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import edu.ucne.reparacion.data.Dao.UsuarioDao
 import edu.ucne.reparacion.data.Remote.AgendaApi
 import edu.ucne.reparacion.data.Remote.UsuarioApi
 import edu.ucne.reparacion.data.SweetPlansDb
