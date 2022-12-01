@@ -41,7 +41,6 @@ fun RegistroUsiario(
 
     val nameValue = remember { mutableStateOf("") }
     val emailValue = remember { mutableStateOf("") }
-    val phoneValue = remember { mutableStateOf("") }
     val passwordValue = remember { mutableStateOf("") }
     val confirmPasswordValue = remember { mutableStateOf("") }
 
@@ -104,8 +103,8 @@ fun RegistroUsiario(
                 OutlinedTextField(
                     value = passwordValue.value,
                     onValueChange = { passwordValue.value = it },
-                    label = { Text(text = "Password") },
-                    placeholder = { Text(text = "Password") },
+                    label = { Text(text = "Contraseña") },
+                    placeholder = { Text(text = "Contraseña") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.8f),
                     trailingIcon = {
@@ -145,7 +144,7 @@ fun RegistroUsiario(
                 Spacer(modifier = Modifier.padding(10.dp))
                 OutlinedButton(
                     onClick = {
-                        if (!validateEmail(usuarioViewModel.email)) {
+                       /* if (!validateEmail(usuarioViewModel.email)) {
                             Toast.makeText(
                                 context,
                                 "Revise el formato del campo Email",
@@ -154,7 +153,7 @@ fun RegistroUsiario(
                         }
                         if (!validateName(usuarioViewModel.nombre)){
                             Toast.makeText(context, "Por favor revise el campo Nombre", Toast.LENGTH_SHORT).show()
-                        }
+                        }*/
 
                     }
                 ){

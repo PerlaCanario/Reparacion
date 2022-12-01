@@ -47,14 +47,14 @@ fun IncioScreen(
 
             }
         },
-        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButtonPosition = FabPosition.End,
         isFloatingActionButtonDocked = true,
 
         bottomBar = {
             BottomAppBar(
 
                 // Defaults to null, that is, No cutout
-
+                backgroundColor = colorResource(id = R.color.Verde4),
                 cutoutShape = MaterialTheme.shapes.small.copy(
                     CornerSize(percent = 50)
                 )
@@ -71,7 +71,7 @@ fun IncioScreen(
                             .size(40 .dp)
                     )
                 }
-                Spacer(modifier = Modifier.padding(13.dp))
+                Spacer(modifier = Modifier.padding(30.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Filled.Notifications,
@@ -82,7 +82,7 @@ fun IncioScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.padding(53.dp))
+                Spacer(modifier = Modifier.padding(40.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         painterResource(id = R.drawable.calendario),

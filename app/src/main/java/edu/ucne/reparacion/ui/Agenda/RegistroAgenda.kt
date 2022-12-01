@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
@@ -31,32 +32,69 @@ fun RegistroAgenda(
     navHostController: NavHostController,
     viewModel: AgendaViewModel = hiltViewModel()
 ) {
+    val ScaffoldState = rememberScaffoldState()
+    var validarNombre by remember { mutableStateOf(false)  }
+    var validarDescripcion by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+
+    val c = Calendar.getInstance()
+    val año = c.get(Calendar.YEAR)
+    val mes = c.get(Calendar.MONTH)
+    val dia = c.get(Calendar.DAY_OF_MONTH)
+
+    var textfecha by remember { mutableStateOf("") }
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { datePicker,year,mon,day ->
+            val month = mon + 1
+            textfecha = " Fecha: $day - $month - $year"
+        },año,mes,dia
+    )
     Scaffold(
 
-        /*floatingActionButton = {
-            FloatingActionButton(onClick = { /* ... */ }) {
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                validarNombre = viewModel.nombreAgenda.isBlank()
+                validarDescripcion = viewModel.descripcion.isBlank()
+
+                if (viewModel.nombreAgenda == ""){
+                    Toast.makeText(context, "El nombre no debe estar vacio", Toast.LENGTH_SHORT).show()
+                }
+                if (viewModel.descripcion == ""){
+                    Toast.makeText(context, "La descripción no debe estar vacio", Toast.LENGTH_SHORT).show()
+                }
+
+                if(!validarNombre && !validarDescripcion){
+                    viewModel.Guardar()
+                    Toast.makeText(context, "Guardado", Toast.LENGTH_SHORT).show()
+
+
+                }else{
+                    Toast.makeText(context, " No fue guardado verifica los datos", Toast.LENGTH_SHORT).show()
+                } }) {
                 Modifier.background(colorResource(id = R.color.Verde2))
                 /* FAB content */
                 Icon(
-                    Icons.Filled.Add,
-                    contentDescription = "Agregar",
+                    painter = painterResource(id = R.drawable.save),
+                    contentDescription = "Guardar",
                     modifier = Modifier
-                        .clickable(onClick = {navHostController.navigate(Screen.RegistroAgenda.route)})
+                        .clickable(onClick = {})
                         .size(40.dp), tint = Color.White,
 
-
-                    )
+                )
 
             }
-        },*/
-        floatingActionButtonPosition = FabPosition.Center,
+        },
+        floatingActionButtonPosition = FabPosition.End,
         isFloatingActionButtonDocked = true,
 
         bottomBar = {
             BottomAppBar(
 
                 // Defaults to null, that is, No cutout
-
+                backgroundColor = colorResource(id = R.color.Verde4),
                 cutoutShape = MaterialTheme.shapes.small.copy(
                     CornerSize(percent = 50)
                 )
@@ -73,7 +111,7 @@ fun RegistroAgenda(
                             .size(40 .dp)
                     )
                 }
-                Spacer(modifier = Modifier.padding(13.dp))
+                Spacer(modifier = Modifier.padding(30.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Filled.Notifications,
@@ -84,7 +122,7 @@ fun RegistroAgenda(
                     )
                 }
 
-                Spacer(modifier = Modifier.padding(53.dp))
+                Spacer(modifier = Modifier.padding(40.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         painterResource(id = R.drawable.calendario),
@@ -104,31 +142,14 @@ fun RegistroAgenda(
             }
         }
     ){
-        val ScaffoldState = rememberScaffoldState()
-        var validarNombre by remember { mutableStateOf(false)  }
-        var validarDescripcion by remember { mutableStateOf(false) }
-
-        val context = LocalContext.current
-
-
-        val c = Calendar.getInstance()
-        val año = c.get(Calendar.YEAR)
-        val mes = c.get(Calendar.MONTH)
-        val dia = c.get(Calendar.DAY_OF_MONTH)
-
-        var textfecha by remember { mutableStateOf("") }
-        val datePickerDialog = DatePickerDialog(
-            context,
-            { datePicker,year,mon,day ->
-                val month = mon + 1
-                textfecha = " Fecha: $day - $month - $year"
-            },año,mes,dia
-        )
 
 
         Scaffold (
             topBar = {
-                TopAppBar(title = { Text(text = "Tarea") })
+                TopAppBar(title = { Text(text = "Tarea")
+
+                })
+
             },
 
 
@@ -144,10 +165,30 @@ fun RegistroAgenda(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center)
             {
-                Spacer(modifier = Modifier.padding(20.dp))
+                Spacer(modifier = Modifier.padding(10.dp))
 
+                OutlinedTextField(
+                    value = viewModel.fecha,
+                    onValueChange = { viewModel.fecha = it },
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    label = {
+                        Text(text = "dd/mm/año")
+                    },
+                    readOnly = true,
 
-                Button(onClick = {datePickerDialog.show()},
+                    trailingIcon = {
+                        IconButton(
+                            onClick = { datePickerDialog.show() }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.calendario),
+                                contentDescription = null,
+                            )
+                        }
+                    }
+
+                )
+                /*Button(onClick = {datePickerDialog.show()},
                     contentPadding = PaddingValues(
                         start = 20.dp,
                         top = 12.dp,
@@ -160,14 +201,14 @@ fun RegistroAgenda(
                         modifier = Modifier.size(ButtonDefaults.IconSize))
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text("Selecione Fecha")
-                }
+                }*/
                 //TextField
                 Spacer(modifier = Modifier.padding(10.dp))
 
                 OutlinedTextField(value = viewModel.nombreAgenda,
                     onValueChange = {viewModel.nombreAgenda = it},
-                    label = { Text(text = "Tarea") },
-                    placeholder = { Text(text = "Tarea") },
+                    label = { Text(text = "Actividad") },
+                    placeholder = { Text(text = "Actividad") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.8f)
                 )
@@ -187,39 +228,7 @@ fun RegistroAgenda(
                 Text( text = "${textfecha}", fontWeight = FontWeight.Medium)
 
                 Spacer(modifier = Modifier.padding(40.dp))
-                Button(onClick = {
-                    validarNombre = viewModel.nombreAgenda.isBlank()
-                    validarDescripcion = viewModel.descripcion.isBlank()
 
-                    if (viewModel.nombreAgenda == ""){
-                        Toast.makeText(context, "El nombre no debe estar vacio", Toast.LENGTH_SHORT).show()
-                    }
-                    if (viewModel.descripcion == ""){
-                        Toast.makeText(context, "La descripción no debe estar vacio", Toast.LENGTH_SHORT).show()
-                    }
-
-                    if(!validarNombre && !validarDescripcion){
-                        viewModel.Guardar()
-                        Toast.makeText(context, "Guardado", Toast.LENGTH_SHORT).show()
-
-
-                    }else{
-                        Toast.makeText(context, " No fue guardado verifica los datos", Toast.LENGTH_SHORT).show()
-                    }
-                },
-                    contentPadding = PaddingValues(
-                        start = 20.dp,
-                        top = 12.dp,
-                        end = 20.dp,
-                        bottom = 12.dp
-                    )
-                ){
-                    Icon(painter = painterResource(id = R.drawable.save),
-                        contentDescription = "Guardar tarea",
-                        modifier = Modifier.size(ButtonDefaults.IconSize))
-                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Guardar")
-                }
             }
         }
     }

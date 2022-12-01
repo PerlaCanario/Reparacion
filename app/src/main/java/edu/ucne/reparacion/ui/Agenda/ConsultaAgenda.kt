@@ -55,14 +55,14 @@ fun ConsultaAgenda(
             BottomAppBar(
 
                 // Defaults to null, that is, No cutout
-
+                backgroundColor = colorResource(id = R.color.Verde4),
                 cutoutShape = MaterialTheme.shapes.small.copy(
                     CornerSize(percent = 50)
                 )
             ) {
 
                 /* Bottom app bar content */
-                Spacer(modifier = Modifier.padding(5.dp))
+                Spacer(modifier = Modifier.padding(15.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Filled.Home,
@@ -72,7 +72,7 @@ fun ConsultaAgenda(
                             .size(40 .dp)
                     )
                 }
-                Spacer(modifier = Modifier.padding(13.dp))
+                Spacer(modifier = Modifier.padding(47.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Filled.Notifications,
@@ -83,7 +83,7 @@ fun ConsultaAgenda(
                     )
                 }
 
-                Spacer(modifier = Modifier.padding(53.dp))
+                Spacer(modifier = Modifier.padding(50.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         painterResource(id = R.drawable.calendario),

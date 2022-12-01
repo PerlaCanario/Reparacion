@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import edu.ucne.reparacion.R
 import edu.ucne.reparacion.ui.navegacion.Screen
@@ -121,6 +122,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
                         .focusRequester(focusRequester = focusRequester),
+
                     /*onImeActionPerformed = { _, controller ->
                             controller?.hideSoftwareKeyboard()
                         }*/
@@ -130,31 +132,30 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.padding(10.dp))
                 OutlinedButton(
                     onClick = {
-                        if (!validateEmail(usuarioViewModel.email)) {
+                        /*if (!validateEmail(usuarioViewModel.email)) {
                             Toast.makeText(
                                 context,
                                 "Revise el formato del campo Email",
                                 Toast.LENGTH_SHORT
                             ).show()
-                        }
+                        }*/
 
                     }
                 ) {
                     Button(
                         onClick = {
-                            // navHostController.navigate(Screen.ConsultaScreen.route)
+                            navHostController.navigate(Screen.InicioScreen.route)
                         }, modifier = Modifier
                             .fillMaxWidth(0.8f)
-                            .height(50.dp)
+                            .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.Verde3))
+
                     ) {
-                        //Modifier.background(colorResource(id = R.color.Verde3))
+
                         Text(
                             text = "Aceptar",
-                            fontSize = TextUnit(20F, TextUnitType.Sp),
-                            modifier =  Modifier.clickable(onClick = {
-                                 navHostController.navigate(Screen.InicioScreen.route)
+                            fontSize = TextUnit(20F, TextUnitType.Sp)
 
-                            })
                         )
 
                     }
@@ -163,17 +164,31 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.padding(20.dp))
                 Text(
                     text = "Registrar",
-                    modifier = Modifier.clickable(onClick = {navHostController.navigate(Screen.RegistroUsuarios.route)})
+                    modifier = Modifier.clickable(onClick = { navHostController.navigate(Screen.RegistroUsuarios.route) })
                 )
                 Spacer(modifier = Modifier.padding(20.dp))
             }
 
         }
 
+        val context = LocalContext.current
+
+        /* fun validacion(){
+        if(usuarioViewModel.email.isBlank()||usuarioViewModel.password.isBlank()){
+            Toast.makeText(
+                context,
+                "Las casillas estan vacias",
+                Toast.LENGTH_SHORT
+            ).show()
+        }else {
+            if()
+
+        }*/
+        fun validateEmail(email: String): Boolean {
+            var patron = "([a-z0-9]+@[a-z]+\\.[a-z]{2,3})".toRegex()
+            return patron.containsMatchIn(email)
+        }
     }
 }
 
-fun validateEmail(email: String) : Boolean{
-    var patron =  "([a-z0-9]+@[a-z]+\\.[a-z]{2,3})".toRegex()
-    return patron.containsMatchIn(email)
-}
+
