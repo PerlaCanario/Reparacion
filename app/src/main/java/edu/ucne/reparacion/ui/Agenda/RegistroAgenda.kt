@@ -2,6 +2,7 @@ package edu.ucne.reparacion.ui.Agenda
 
 import android.app.DatePickerDialog
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -33,11 +34,12 @@ fun RegistroAgenda(
     viewModel: AgendaViewModel = hiltViewModel()
 ) {
     val ScaffoldState = rememberScaffoldState()
-    var validarNombre by remember { mutableStateOf(false)  }
+    var validarNombre by remember { mutableStateOf(false) }
     var validarDescripcion by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
+    val imagen = painterResource(id = R.drawable.registar)
 
     val c = Calendar.getInstance()
     val año = c.get(Calendar.YEAR)
@@ -47,10 +49,10 @@ fun RegistroAgenda(
     var textfecha by remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         context,
-        { datePicker,year,mon,day ->
+        { datePicker, year, mon, day ->
             val month = mon + 1
             textfecha = " Fecha: $day - $month - $year"
-        },año,mes,dia
+        }, año, mes, dia
     )
     Scaffold(
 
@@ -59,21 +61,31 @@ fun RegistroAgenda(
                 validarNombre = viewModel.nombreAgenda.isBlank()
                 validarDescripcion = viewModel.descripcion.isBlank()
 
-                if (viewModel.nombreAgenda == ""){
-                    Toast.makeText(context, "El nombre no debe estar vacio", Toast.LENGTH_SHORT).show()
+                if (viewModel.nombreAgenda == "") {
+                    Toast.makeText(context, "El nombre no debe estar vacio", Toast.LENGTH_SHORT)
+                        .show()
                 }
-                if (viewModel.descripcion == ""){
-                    Toast.makeText(context, "La descripción no debe estar vacio", Toast.LENGTH_SHORT).show()
+                if (viewModel.descripcion == "") {
+                    Toast.makeText(
+                        context,
+                        "La descripción no debe estar vacio",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
-                if(!validarNombre && !validarDescripcion){
+                if (!validarNombre && !validarDescripcion) {
                     viewModel.Guardar()
                     Toast.makeText(context, "Guardado", Toast.LENGTH_SHORT).show()
 
 
-                }else{
-                    Toast.makeText(context, " No fue guardado verifica los datos", Toast.LENGTH_SHORT).show()
-                } }) {
+                } else {
+                    Toast.makeText(
+                        context,
+                        " No fue guardado verifica los datos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }) {
                 Modifier.background(colorResource(id = R.color.Verde2))
                 /* FAB content */
                 Icon(
@@ -81,9 +93,10 @@ fun RegistroAgenda(
                     contentDescription = "Guardar",
                     modifier = Modifier
                         .clickable(onClick = {})
-                        .size(40.dp), tint = Color.White,
+                        .size(40.dp),
+                    tint = Color.White,
 
-                )
+                    )
 
             }
         },
@@ -107,8 +120,8 @@ fun RegistroAgenda(
                         Icons.Filled.Home,
                         contentDescription = "Inicio",
                         modifier = Modifier
-                            .clickable(onClick = {navHostController.navigate(Screen.InicioScreen.route)})
-                            .size(40 .dp)
+                            .clickable(onClick = { navHostController.navigate(Screen.InicioScreen.route) })
+                            .size(40.dp)
                     )
                 }
                 Spacer(modifier = Modifier.padding(30.dp))
@@ -117,7 +130,7 @@ fun RegistroAgenda(
                         Icons.Filled.Notifications,
                         contentDescription = "Lista de pendientes",
                         modifier = Modifier
-                            .clickable(onClick = {navHostController.navigate(Screen.ConsultaAgenda.route)})
+                            .clickable(onClick = { navHostController.navigate(Screen.ConsultaAgenda.route) })
                             .size(40.dp)
                     )
                 }
@@ -128,7 +141,7 @@ fun RegistroAgenda(
                         painterResource(id = R.drawable.calendario),
                         contentDescription = "Calendario",
                         modifier = Modifier
-                            .clickable(onClick = {navHostController.navigate(Screen.ConsultaAgenda.route)})
+                            .clickable(onClick = { navHostController.navigate(Screen.ConsultaAgenda.route) })
                             .size(40.dp)
                     )
                 }
@@ -141,54 +154,69 @@ fun RegistroAgenda(
                   }*/
             }
         }
-    ){
+    ) {
 
 
-        Scaffold (
+        Scaffold(
             topBar = {
-                TopAppBar(title = { Text(text = "Tarea")
-
-                })
+                TopAppBar(
+                    title = { Text(text = "Actividad") },
+                    backgroundColor = colorResource(id = R.color.Verde2)
+                )
 
             },
 
 
             scaffoldState = ScaffoldState
 
-        )
-        {
-            it
+        ) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
 
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center)
-            {
-                Spacer(modifier = Modifier.padding(10.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White), contentAlignment = Alignment.TopCenter
+                ) {
 
-                OutlinedTextField(
-                    value = viewModel.fecha,
-                    onValueChange = { viewModel.fecha = it },
-                    modifier = Modifier.fillMaxWidth(0.8f),
-                    label = {
-                        Text(text = "dd/mm/año")
-                    },
-                    readOnly = true,
+                    Image(
+                        painter = imagen,
+                        contentDescription = null
+                    )
+                }
+                it
 
-                    trailingIcon = {
-                        IconButton(
-                            onClick = { datePickerDialog.show() }
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.calendario),
-                                contentDescription = null,
-                            )
-                        }
-                    }
-
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 )
-                /*Button(onClick = {datePickerDialog.show()},
+                {
+                    Spacer(modifier = Modifier.padding(10.dp))
+
+                    OutlinedTextField(
+                        value = viewModel.fecha,
+                        onValueChange = { viewModel.fecha = it },
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        label = {
+                            Text(text = "dd/mm/año")
+                        },
+                        readOnly = true,
+
+                        trailingIcon = {
+                            IconButton(
+                                onClick = { datePickerDialog.show() }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.calendario),
+                                    contentDescription = null,
+                                )
+                            }
+                        }
+
+                    )
+                    /*Button(onClick = {datePickerDialog.show()},
                     contentPadding = PaddingValues(
                         start = 20.dp,
                         top = 12.dp,
@@ -202,35 +230,39 @@ fun RegistroAgenda(
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text("Selecione Fecha")
                 }*/
-                //TextField
-                Spacer(modifier = Modifier.padding(10.dp))
+                    //TextField
+                    Spacer(modifier = Modifier.padding(10.dp))
 
-                OutlinedTextField(value = viewModel.nombreAgenda,
-                    onValueChange = {viewModel.nombreAgenda = it},
-                    label = { Text(text = "Actividad") },
-                    placeholder = { Text(text = "Actividad") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.8f)
-                )
-                Spacer(modifier = Modifier.padding(15.dp))
+                    OutlinedTextField(
+                        value = viewModel.nombreAgenda,
+                        onValueChange = { viewModel.nombreAgenda = it },
+                        label = { Text(text = "Actividad") },
+                        placeholder = { Text(text = "Actividad") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(0.8f)
+                    )
+                    Spacer(modifier = Modifier.padding(15.dp))
 
-                OutlinedTextField(value = viewModel.descripcion, onValueChange = {viewModel.descripcion = it},
-                    label = { Text(text = "Descripción") },
-                    placeholder = { Text(text = "Descripción") },
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
+                    OutlinedTextField(
+                        value = viewModel.descripcion,
+                        onValueChange = { viewModel.descripcion = it },
+                        label = { Text(text = "Descripción") },
+                        placeholder = { Text(text = "Descripción") },
+                        singleLine = true,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
 
-                )
-                Spacer(modifier = Modifier.padding(10.dp))
+                    )
+                    Spacer(modifier = Modifier.padding(10.dp))
 
-                //  Text de las fecha
-                Text( text = "${textfecha}", fontWeight = FontWeight.Medium)
+                    //  Text de las fecha
+                    Text(text = "${textfecha}", fontWeight = FontWeight.Medium)
 
-                Spacer(modifier = Modifier.padding(40.dp))
+                    Spacer(modifier = Modifier.padding(40.dp))
 
+                }
             }
         }
-    }
 
+    }
 }

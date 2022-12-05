@@ -41,7 +41,7 @@ fun LoginScreen(
 
     ) {
 
-    var error by rememberSaveable{ mutableStateOf(false) }
+    var error by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
     val image = painterResource(id = R.drawable.sweetplans)
@@ -52,6 +52,15 @@ fun LoginScreen(
     val passwordVisibility = remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
 
+    fun validateEmail(email: String): Boolean {
+        var patron = "([a-z0-9]+@[a-z]+\\.[a-z]{2,3})".toRegex()
+        return patron.containsMatchIn(email)
+    }
+
+    fun validatePassword(password: String): Boolean {
+        var valido = "([A-Z0-9a-z])".toRegex()
+        return valido.containsMatchIn(password)
+    }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
         Box(
@@ -132,19 +141,28 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.padding(10.dp))
                 OutlinedButton(
                     onClick = {
-                        /*if (!validateEmail(usuarioViewModel.email)) {
-                            Toast.makeText(
-                                context,
-                                "Revise el formato del campo Email",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }*/
+
 
                     }
                 ) {
                     Button(
                         onClick = {
-                            navHostController.navigate(Screen.InicioScreen.route)
+
+                            if (!validateEmail(usuarioViewModel.email)) {
+                                Toast.makeText(
+                                    context,
+                                    "Revise el formato del Email",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (!validatePassword(usuarioViewModel.password)) {
+                                Toast.makeText(
+                                    context,
+                                    "Contraseña incorrecta",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }else if (validateEmail(usuarioViewModel.email) && validatePassword(usuarioViewModel.password)){
+                                navHostController.navigate(Screen.InicioScreen.route)
+                            }
                         }, modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .height(50.dp),
@@ -171,24 +189,8 @@ fun LoginScreen(
 
         }
 
-        val context = LocalContext.current
-
-        /* fun validacion(){
-        if(usuarioViewModel.email.isBlank()||usuarioViewModel.password.isBlank()){
-            Toast.makeText(
-                context,
-                "Las casillas estan vacias",
-                Toast.LENGTH_SHORT
-            ).show()
-        }else {
-            if()
-
-        }*/
-        fun validateEmail(email: String): Boolean {
-            var patron = "([a-z0-9]+@[a-z]+\\.[a-z]{2,3})".toRegex()
-            return patron.containsMatchIn(email)
-        }
     }
 }
+
 
 
