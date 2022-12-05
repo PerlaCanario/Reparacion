@@ -148,19 +148,19 @@ fun LoginScreen(
                     Button(
                         onClick = {
 
-                            if (!validateEmail(usuarioViewModel.email)) {
+                            if (validateEmail(usuarioViewModel.email)) {
                                 Toast.makeText(
                                     context,
                                     "Revise el formato del Email",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            } else if (!validatePassword(usuarioViewModel.password)) {
+                            } else if (validatePassword(usuarioViewModel.password)) {
                                 Toast.makeText(
                                     context,
                                     "Contraseña incorrecta",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else if (validateEmail(usuarioViewModel.email) && validatePassword(usuarioViewModel.password)){
+                            }else if (!validateEmail(usuarioViewModel.email) && !validatePassword(usuarioViewModel.password)){
                                 navHostController.navigate(Screen.InicioScreen.route)
                             }
                         }, modifier = Modifier

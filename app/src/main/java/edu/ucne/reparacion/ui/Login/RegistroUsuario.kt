@@ -163,26 +163,26 @@ fun RegistroUsiario(
                     }
                 ){
                     Button(onClick = {
-                        if (!validateEmail(usuarioViewModel.email)) {
+                        if (validateEmail(usuarioViewModel.email)) {
                         Toast.makeText(
                             context,
                             "Revise el formato del Email",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                    else if (!validateName(usuarioViewModel.nombre)){
+                    else if (validateName(usuarioViewModel.nombre)){
                         Toast.makeText(
                             context,
                             "Por favor revise el Nombre",
                             Toast.LENGTH_SHORT
                         ).show()
-                    }else if (!validatePassword(usuarioViewModel.password)) {
+                    }else if (validatePassword(usuarioViewModel.password)) {
                             Toast.makeText(
                                 context,
                                 "Contraseña incorrecta",
                                 Toast.LENGTH_SHORT
                             ).show()
-                        }else if (validateEmail(usuarioViewModel.email) && validatePassword(usuarioViewModel.password) && validateName(usuarioViewModel.nombre)){
+                        }else if (!validateEmail(usuarioViewModel.email) && !validatePassword(usuarioViewModel.password) && !validateName(usuarioViewModel.nombre)){
                             usuarioViewModel.Guardar()
                             navHostController.navigate(Screen.LoginScreen.route)
                         }
