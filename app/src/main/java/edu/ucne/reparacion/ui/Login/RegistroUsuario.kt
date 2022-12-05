@@ -5,7 +5,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.ButtonDefaults
+import  androidx.compose.material.ButtonColors
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -188,8 +189,8 @@ fun RegistroUsiario(
                         }
                    }, modifier = Modifier
                         .fillMaxWidth(0.8f)
-                        .height(50.dp)
-
+                        .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(colorResource(id = R.color.Verde3))
                     ) {
                         Text(text = "Registrar", fontSize =  TextUnit(20F, TextUnitType.Sp))
                     }
