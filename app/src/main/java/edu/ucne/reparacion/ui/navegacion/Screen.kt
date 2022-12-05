@@ -7,5 +7,6 @@ sealed class Screen(
     object LoginScreen: Screen("LoginScreen")
     object InicioScreen: Screen("InicioScreen")
     object RegistroAgenda: Screen("RegistroAgenda")
+    object  CalendarioView: Screen("CalendarioView")
     object ConsultaAgenda: Screen("ConsultaAgenda")
 }

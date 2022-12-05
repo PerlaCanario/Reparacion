@@ -1,6 +1,7 @@
 package edu.ucne.reparacion.ui.Agenda
 
 import android.app.DatePickerDialog
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,12 +11,11 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -36,23 +36,21 @@ fun RegistroAgenda(
     val ScaffoldState = rememberScaffoldState()
     var validarNombre by remember { mutableStateOf(false) }
     var validarDescripcion by remember { mutableStateOf(false) }
-
     val context = LocalContext.current
 
     val imagen = painterResource(id = R.drawable.registar)
 
-    val c = Calendar.getInstance()
-    val año = c.get(Calendar.YEAR)
-    val mes = c.get(Calendar.MONTH)
-    val dia = c.get(Calendar.DAY_OF_MONTH)
+    val calendar = Calendar.getInstance()
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-    var textfecha by remember { mutableStateOf("") }
-    val datePickerDialog = DatePickerDialog(
-        context,
-        { datePicker, year, mon, day ->
-            val month = mon + 1
-            textfecha = " Fecha: $day - $month - $year"
-        }, año, mes, dia
+    //Calendario fecha dia Actual
+    val date = DatePickerDialog(
+        context,{d, year, month, day->
+            val month = month + 1
+            viewModel.fecha = "$day / $month / $year"
+        },year, month, day
     )
     Scaffold(
 
@@ -97,7 +95,6 @@ fun RegistroAgenda(
                     tint = Color.White,
 
                     )
-
             }
         },
         floatingActionButtonPosition = FabPosition.End,
@@ -141,7 +138,13 @@ fun RegistroAgenda(
                         painterResource(id = R.drawable.calendario),
                         contentDescription = "Calendario",
                         modifier = Modifier
-                            .clickable(onClick = { navHostController.navigate(Screen.ConsultaAgenda.route) })
+                            .clickable(
+                                onClick = {
+                                    navHostController.navigate(Screen.ConsultaAgenda.route)
+
+                                }
+
+                            )
                             .size(40.dp)
                     )
                 }
@@ -198,18 +201,24 @@ fun RegistroAgenda(
                     OutlinedTextField(
                         value = viewModel.fecha,
                         onValueChange = { viewModel.fecha = it },
-                        modifier = Modifier.fillMaxWidth(0.8f),
-                        label = {
-                            Text(text = "dd/mm/año")
+                        modifier = Modifier
+                        .fillMaxWidth(0.8f),
+
+                                label = {
+                            Text(text = "Fecha")
                         },
                         readOnly = true,
-
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.EditCalendar,
+                                contentDescription = null
+                            )},
                         trailingIcon = {
                             IconButton(
-                                onClick = { datePickerDialog.show() }
+                                onClick = { date.show() }
                             ) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.calendario),
+                                    imageVector = Icons.Default.CalendarToday,
                                     contentDescription = null,
                                 )
                             }
@@ -254,10 +263,6 @@ fun RegistroAgenda(
 
                     )
                     Spacer(modifier = Modifier.padding(10.dp))
-
-                    //  Text de las fecha
-                    Text(text = "${textfecha}", fontWeight = FontWeight.Medium)
-
                     Spacer(modifier = Modifier.padding(40.dp))
 
                 }

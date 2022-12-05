@@ -58,6 +58,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3:1.1.0-alpha02'
     implementation "androidx.compose.material:material:$compose_version"
     testImplementation 'junit:junit:4.13.2'
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"

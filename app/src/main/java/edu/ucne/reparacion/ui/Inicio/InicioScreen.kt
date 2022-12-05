@@ -88,7 +88,7 @@ fun IncioScreen(
                         painterResource(id = R.drawable.calendario),
                         contentDescription = "Calendario",
                         modifier = Modifier
-                            .clickable(onClick = {navHostController.navigate(Screen.ConsultaAgenda.route)})
+                            .clickable(onClick = {navHostController.navigate(Screen.CalendarioView.route)})
                             .size(40.dp)
                     )
                 }
