@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import edu.ucne.reparacion.ui.Agenda.CalendarioView
 import edu.ucne.reparacion.ui.Inicio.IncioScreen
 import edu.ucne.reparacion.ui.Login.LoginScreen
 import edu.ucne.reparacion.ui.Login.RegistroUsiario
@@ -28,9 +27,6 @@ fun App() {
 
         composable(Screen.RegistroAgenda.route){
            RegistroAgenda(navHostController = navHostController)
-        }
-        composable(Screen.CalendarioView.route) {
-            CalendarioView(navHostController = navHostController)
         }
         composable(Screen.ConsultaAgenda.route){
            ConsultaAgenda(navHostController = navHostController)
